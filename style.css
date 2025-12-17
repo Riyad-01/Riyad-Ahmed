@@ -1,0 +1,9 @@
+/* Copy ALL the CSS from the original file (everything inside <style> tags) */
+:root {
+    --primary: #2A5CAA;
+    --secondary: #00A4BD;
+    --accent: #FF6B35;
+    /* ... continue with all CSS ... */
+}
+
+/* ... (paste all CSS rules here) ... */
