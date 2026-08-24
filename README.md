@@ -1,23 +1,26 @@
-# Riyad Ahmed - Portfolio Website
+# Hi, I'm Riyad Ahmed 👋
 
-Professional portfolio website for Riyad Ahmed, an eLearning Content Writer and Digital Designer with 6+ years of experience.
+**AI-Native Developer | eLearning Content Writer, Product Designer & Digital Marketer**
 
-## Features
-- Responsive design (mobile, tablet, desktop)
-- Interactive project showcase
-- Skills visualization
-- Contact form
-- Smooth scrolling navigation
-- Modern, clean UI/UX
+I don't just code. I build with AI.
 
-## Technologies Used
-- HTML5
-- CSS3 (with CSS Variables)
-- Vanilla JavaScript
-- Font Awesome Icons
-- Google Fonts
+6+ years of experience in eLearning content, digital design, and marketing — now shipping 10x faster with AI tools like Claude Code, Cursor, and ChatGPT.
 
-## Live Demo
-Visit the live site at: [Your GitHub Pages URL will appear here]
+### 🚀 What I Do
+- **eLearning Content Writing** - Engaging, learner-focused educational content
+- **Product Design** - Clean, modern, and user-centric UI/UX
+- **Digital Marketing** - Blogs, Sales Copy & Content Strategy that converts
+- **AI-Assisted Development** - From idea to live website in hours, not weeks
 
-## Project Structure
+### ⚡ Current Focus
+Building **orchesyn-website** — my professional portfolio crafted with an AI-assisted workflow. Fully responsive, modern, and built for performance.
+
+### 🛠️ My Stack
+`HTML5` `CSS3` `JavaScript` `Figma` `AI Tools` `Git & GitHub`
+
+### 📍 Sylhet, Bangladesh | 🌐 Open to freelance & collaborations
+
+Let's build something amazing together!
+
+---
+*My Workflow: Prompt → Design → Build with AI → Ship* 🚀
