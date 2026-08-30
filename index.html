@@ -73,7 +73,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(7,9,14,.72);
 .scroll-progress{position:absolute;left:0;bottom:-1px;height:1.5px;width:0;background:linear-gradient(90deg,var(--cyan),var(--violet))}
 
 /* ================= HERO ================= */
-.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:130px;position:relative;overflow:hidden}
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:130px 0 96px;position:relative;overflow:hidden}
 .hero .glow-bg.c{width:560px;height:560px;background:rgba(0,240,255,.07);top:-160px;right:-120px}
 .hero .glow-bg.v{width:520px;height:520px;background:rgba(168,85,247,.06);bottom:-200px;left:-140px}
 #sparkCanvas{position:absolute;right:max(-40px,calc(50% - 720px));top:50%;transform:translateY(-54%);width:min(46vw,640px);height:min(46vw,640px);z-index:0;pointer-events:none;opacity:.95}
@@ -277,7 +277,7 @@ footer small{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spac
     <p class="hero-sub">I <b>build the systems</b>, <b>run the operations</b>, and <b>lead the growth</b> — digital products, e-learning at scale, and the AI pipelines that tie it all together. One operator. Team-grade output.</p>
     <div class="cta-row">
       <a class="btn btn-solid magnetic" href="#work">VIEW EXPERIMENTS ↓</a>
-      <a class="btn btn-ghost magnetic" href="mailto:riyadahmed646@gmail.com">START A PROJECT</a>
+      <a class="btn btn-ghost magnetic" href="mailto:riyadahmed646@gmail.com">RIYADAHMED646@GMAIL.COM</a>
     </div>
     <div class="stats">
       <div class="stat"><b><span class="count" data-to="6">0</span><i>+</i></b><span>YEARS IN ED-TECH &amp; DIGITAL</span></div>
@@ -506,12 +506,23 @@ if(!rm){
   addEventListener('load',()=>setTimeout(finishBoot,750));
   setTimeout(finishBoot,2200);
 }else{finishBoot()}
+function runCounters(scope){
+  scope.querySelectorAll('.count').forEach(c=>{
+    if(c.dataset.done)return;c.dataset.done=1;
+    const to=+c.dataset.to;
+    if(rm){c.textContent=to.toLocaleString();return;}
+    const t0=performance.now(),dur=1400;
+    (function n(t){const p=Math.min(1,(t-t0)/dur),v=Math.floor(to*(1-Math.pow(1-p,3)));c.textContent=v.toLocaleString();if(p<1)requestAnimationFrame(n)})(t0);
+  });
+}
 function finishBoot(){
   if(!boot||boot.classList.contains('done'))return;
   boot.classList.add('done');
   document.querySelector('.kicker').style.transition='opacity .8s ease .1s';
   document.querySelector('.kicker').style.opacity='1';
   document.querySelector('.hero').classList.add('ready');
+  const stats=document.querySelector('.stats');
+  if(stats)setTimeout(()=>runCounters(stats),900);
 }
 
 document.querySelectorAll('#heroTitle .row').forEach((row,ri)=>{
@@ -591,11 +602,7 @@ if(matchMedia('(hover:hover)').matches&&!rm){
 const io=new IntersectionObserver(es=>es.forEach(e=>{
   if(!e.isIntersecting)return;
   e.target.classList.add('in');
-  e.target.querySelectorAll('.count').forEach(c=>{
-    if(c.dataset.done)return;c.dataset.done=1;
-    const to=+c.dataset.to,t0=performance.now(),dur=1400;
-    (function n(t){const p=Math.min(1,(t-t0)/dur),v=Math.floor(to*(1-Math.pow(1-p,3)));c.textContent=v.toLocaleString();if(p<1)requestAnimationFrame(n)})(t0);
-  });
+  runCounters(e.target);
   io.unobserve(e.target);
 }),{threshold:.14});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
