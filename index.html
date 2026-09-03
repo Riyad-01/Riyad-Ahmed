@@ -134,6 +134,42 @@ body.ready .hero .cta-row{opacity:1;transform:none;transition-delay:.9s}
 .scroll-hint i::after{content:"";position:absolute;top:-50%;left:0;width:100%;height:50%;background:var(--grad);animation:drip 2s var(--ease) infinite}
 @keyframes drip{0%{top:-50%}100%{top:110%}}
 
+/* cinematic hero assets */
+.gridlines{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.028) 0 1px,transparent 1px 120px),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 120px);
+  -webkit-mask-image:radial-gradient(80% 70% at 50% 45%,#000 30%,transparent 100%);
+          mask-image:radial-gradient(80% 70% at 50% 45%,#000 30%,transparent 100%)}
+.streak{position:absolute;top:18%;left:-30%;width:56%;height:1px;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(129,140,248,.7),rgba(34,211,238,.5),transparent);
+  filter:blur(.5px);animation:streak 11s cubic-bezier(.6,0,.3,1) infinite}
+.streak.s2{top:64%;left:auto;right:-40%;width:44%;animation-duration:14s;animation-delay:-6s;
+  background:linear-gradient(90deg,transparent,rgba(168,85,247,.55),transparent)}
+@keyframes streak{0%{transform:translateX(-10%);opacity:0}12%{opacity:1}55%{opacity:.7}100%{transform:translateX(320%);opacity:0}}
+.spark{position:absolute;z-index:1;pointer-events:none;border-radius:50%;
+  background:radial-gradient(circle,rgba(165,180,252,.9),rgba(165,180,252,0) 70%);
+  animation:drift var(--dur,14s) linear infinite;will-change:transform}
+@keyframes drift{0%{transform:translate3d(0,20px,0);opacity:0}12%{opacity:var(--o,.7)}85%{opacity:var(--o,.7)}100%{transform:translate3d(var(--dx,40px),-84vh,0);opacity:0}}
+/* morph beat */
+.hero-morph{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;opacity:0;pointer-events:none;will-change:opacity}
+.morph-label{font-family:var(--mono);font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted)}
+.morph-word{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(2.2rem,7.6vw,6rem);line-height:1.05;letter-spacing:-.02em;text-align:center;max-width:12ch;
+  transition:opacity .42s var(--ease),transform .42s var(--ease),filter .42s var(--ease),clip-path .42s var(--ease)}
+.morph-word.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.morph-word.out{opacity:0;transform:translateY(-30px) scale(1.14);filter:blur(16px);clip-path:inset(0 0 52% 0)}
+.morph-word.pre{opacity:0;transform:translateY(30px) scale(.94);filter:blur(16px);clip-path:inset(46% 0 0 0);transition:none}
+.morph-word:not(.pre):not(.out){opacity:1;transform:none;filter:blur(0);clip-path:inset(0 0 0 0)}
+.morph-dots{display:flex;gap:12px}
+.morph-dots i{width:30px;height:2px;background:rgba(255,255,255,.14);transform:skewX(-24deg);transition:background .35s}
+.morph-dots i.on{background:var(--grad)}
+/* hero progress rail */
+.rail{position:absolute;right:clamp(14px,3vw,34px);top:50%;transform:translateY(-50%);z-index:5;display:flex;flex-direction:column;align-items:center;gap:12px}
+.rail .rt{width:2px;height:180px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;position:relative}
+.rail .rt i{position:absolute;top:0;left:0;width:100%;height:100%;background:var(--grad);transform-origin:top;transform:scaleY(0)}
+.rail .rp{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em;font-variant-numeric:tabular-nums}
+@media(max-width:760px){.rail{display:none}}
+
 /* marquee */
 .marquee{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:22px 0;overflow:hidden;background:var(--bg2)}
 .mq-track{display:flex;gap:0;width:max-content;animation:mq 26s linear infinite}
@@ -216,6 +252,30 @@ section{padding:clamp(84px,10vw,150px) 0;position:relative}
 .about-copy .pull{font-family:var(--disp);font-weight:700;font-size:clamp(1.25rem,2.2vw,1.7rem);line-height:1.4;color:var(--text);border-left:2px solid;border-image:var(--grad) 1;padding-left:22px;margin:30px 0 8px}
 @media(max-width:820px){.about-grid{grid-template-columns:1fr}.portrait{max-width:360px}}
 
+/* blog */
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:980px){.blog-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.blog-grid{grid-template-columns:1fr}}
+.bcard{background:rgba(16,16,24,.6);border:1px solid var(--line2);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:transform .5s var(--ease),border-color .4s,background .4s;will-change:transform}
+.bcard:hover{transform:translateY(-8px);border-color:rgba(129,140,248,.45);background:rgba(24,24,38,.75)}
+.bmedia{aspect-ratio:16/9;overflow:hidden;position:relative;background:linear-gradient(135deg,#151522,#0d0d15)}
+.bmedia img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.bcard:hover .bmedia img{transform:scale(1.06)}
+.bcat{position:absolute;top:14px;left:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(5,5,7,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);padding:6px 12px;border-radius:99px}
+.bbody{padding:22px 22px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.bmeta{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);display:flex;gap:14px}
+.bbody h3{font-family:var(--disp);font-weight:700;font-size:17.5px;line-height:1.35;letter-spacing:.01em}
+.bbody p{color:var(--muted);font-size:13.5px;line-height:1.65;flex:1}
+.bread{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#fff;display:inline-flex;align-items:center;gap:8px;background:none;border:none;padding:0;cursor:pointer;text-align:left}
+.bread::after{content:"\2192";transition:transform .3s var(--ease)}
+.bcard:hover .bread::after{transform:translateX(5px)}
+.bfilters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px}
+.bfilter{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:9px 16px;border-radius:99px;cursor:pointer;transition:all .3s;background:transparent}
+.bfilter:hover{color:var(--text);border-color:rgba(129,140,248,.5)}
+.bfilter.active{color:#fff;background:var(--grad);border-color:transparent}
+.bcard.hide{display:none}
+.bempty{color:var(--muted);font-size:14px;padding:30px 0}
+
 /* contact */
 .contact{text-align:left}
 .contact .avail{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:11px 20px;border-radius:99px;margin-bottom:38px}
@@ -269,6 +329,7 @@ footer small{font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-sp
     <div class="nav-links">
       <a href="#work">Work</a>
       <a href="#capabilities">Capabilities</a>
+      <a href="#insights">Insights</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </div>
@@ -280,6 +341,10 @@ footer small{font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-sp
   <div class="hero-sticky">
   <div class="hero-bg" aria-hidden="true"></div>
   <canvas id="blob-canvas" aria-hidden="true"></canvas>
+  <div class="gridlines" aria-hidden="true"></div>
+  <div class="streak" aria-hidden="true"></div>
+  <div class="streak s2" aria-hidden="true"></div>
+  <div id="sparks" aria-hidden="true"></div>
   <div class="vignette" aria-hidden="true"></div>
   <div class="hero-inner wrap">
     <p class="kicker">RiyadLabs — Product · Design · Ops</p>
@@ -294,6 +359,11 @@ footer small{font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-sp
       <a class="btn btn-ghost" href="mailto:riyadahmed646@gmail.com">Get in touch</a>
     </div>
   </div>
+  <div class="hero-morph" aria-hidden="true">
+    <span class="morph-label" id="morphLabel">01 / Build</span>
+    <div class="morph-word pre" id="morphWord">PRODUCT</div>
+    <div class="morph-dots" id="morphDots"><i class="on"></i><i></i><i></i><i></i></div>
+  </div>
   <div class="hero-beat2">
     <div class="beat-line">Six years. <span class="grad">One operator.</span><br>Systems that ship.</div>
     <div class="glass-stats">
@@ -304,6 +374,7 @@ footer small{font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-sp
     </div>
   </div>
   <div class="scroll-hint" aria-hidden="true"><i></i>Scroll</div>
+  <div class="rail" aria-hidden="true"><span class="rp" id="railP">0%</span><span class="rt"><i id="railF"></i></span></div>
   </div>
 </header>
 
@@ -387,6 +458,21 @@ footer small{font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-sp
   </div>
 </section>
 
+<section id="insights" class="wrap">
+  <div class="sec-head">
+    <span class="sec-label reveal">Insights &amp; updates</span>
+    <h2 class="sec-title reveal" style="--d:.08s">Ideas from <span class="grad">the floor.</span></h2>
+  </div>
+  <div class="bfilters reveal" id="bfilters">
+    <button class="bfilter active" data-f="all">All</button>
+    <button class="bfilter" data-f="E-Learning">E-Learning</button>
+    <button class="bfilter" data-f="AI">AI</button>
+    <button class="bfilter" data-f="Content">Content</button>
+  </div>
+  <div class="blog-grid" id="bgrid"></div>
+  <p class="bnote reveal" style="font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:28px">Data layer: blogService — swap static JSON for WordPress REST API without touching the UI.</p>
+</section>
+
 <section id="contact" class="wrap contact">
   <div class="avail reveal"><i></i>Available for select projects — replies within 24h</div>
   <h2 class="reveal" style="--d:.08s">Have an idea? <span class="grad">Let's build it.</span></h2>
@@ -464,7 +550,9 @@ function startReveals(){
   var io=new IntersectionObserver(function(es){
     es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('is-in');io.unobserve(en.target);}});
   },{threshold:0.12,rootMargin:'0px 0px -6% 0px'});
+  window.__revealIO=io;
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  document.querySelectorAll('.bcard').forEach(function(el){io.observe(el);});
   countUp();
 }
 function countUp(){
@@ -484,6 +572,95 @@ function countUp(){
   nums.forEach(function(el){io2.observe(el);});
 }
 
+
+/* =====================================================================
+   blogService — decoupled data layer (CMS-ready)
+   FUTURE: switch to Headless CMS by changing CMS_PROVIDER below to:
+     "wordpress"  -> WordPress REST API: /wp-json/wp/v2/posts
+     "strapi"     -> /api/posts?populate=*
+     "contentful" | "sanity" -> their respective SDK endpoints
+   The UI only ever calls getBlogs() and getBlog(id) — nothing else.
+   ===================================================================== */
+var CMS_PROVIDER = 'static'; // "static" | "wordpress" | "strapi"
+var CMS_URL = '';            // e.g. 'https://your-wp-site.com'
+
+var BLOGS = [
+  {
+    id:'5000-courses-one-operator',
+    title:'1,000+ Courses, One Operator: My E-Learning Production System',
+    category:'E-Learning',
+    date:'2026-08-12',
+    readTime:'7 min',
+    author:'Riyad Ahmed',
+    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'800'%20height%3D'450'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'g'%20x1%3D'0'%20y1%3D'0'%20x2%3D'1'%20y2%3D'1'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%23312E81'%2F%3E%3Cstop%20offset%3D'.55'%20stop-color%3D'%236D28D9'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%230E7490'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'url(%23g)'%2F%3E%3Ccircle%20cx%3D'600'%20cy%3D'100'%20r%3D'190'%20fill%3D'rgba(255%2C255%2C255%2C0.07)'%2F%3E%3Ccircle%20cx%3D'150'%20cy%3D'390'%20r%3D'230'%20fill%3D'rgba(0%2C0%2C0%2C0.18)'%2F%3E%3Crect%20x%3D'0'%20y%3D'312'%20width%3D'800'%20height%3D'1'%20fill%3D'rgba(255%2C255%2C255%2C0.2)'%2F%3E%3Crect%20x%3D'170'%20y%3D'0'%20width%3D'1'%20height%3D'450'%20fill%3D'rgba(255%2C255%2C255%2C0.14)'%2F%3E%3Ccircle%20cx%3D'625'%20cy%3D'330'%20r%3D'54'%20fill%3D'none'%20stroke%3D'rgba(255%2C255%2C255%2C0.25)'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E',
+    excerpt:'Six years, sixteen platforms, a thousand courses. The naming conventions, QA gates and publishing pipelines that make scale boring — in the best way.'
+  },
+  {
+    id:'ai-agents-content-pipeline',
+    title:'AI Agents in the Content Pipeline: What Actually Works in 2026',
+    category:'AI',
+    date:'2026-07-28',
+    readTime:'9 min',
+    author:'Riyad Ahmed',
+    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'800'%20height%3D'450'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'g'%20x1%3D'0'%20y1%3D'0'%20x2%3D'1'%20y2%3D'1'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%231E1B4B'%2F%3E%3Cstop%20offset%3D'.55'%20stop-color%3D'%237C3AED'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%2322D3EE'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'url(%23g)'%2F%3E%3Ccircle%20cx%3D'640'%20cy%3D'100'%20r%3D'190'%20fill%3D'rgba(255%2C255%2C255%2C0.07)'%2F%3E%3Ccircle%20cx%3D'180'%20cy%3D'390'%20r%3D'230'%20fill%3D'rgba(0%2C0%2C0%2C0.18)'%2F%3E%3Crect%20x%3D'0'%20y%3D'312'%20width%3D'800'%20height%3D'1'%20fill%3D'rgba(255%2C255%2C255%2C0.2)'%2F%3E%3Crect%20x%3D'230'%20y%3D'0'%20width%3D'1'%20height%3D'450'%20fill%3D'rgba(255%2C255%2C255%2C0.14)'%2F%3E%3Ccircle%20cx%3D'590'%20cy%3D'330'%20r%3D'54'%20fill%3D'none'%20stroke%3D'rgba(255%2C255%2C255%2C0.25)'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E',
+    excerpt:'Writer, designer, publisher agents — I run all three. Where they save weeks, where they silently fail, and the human gates I will not remove.'
+  },
+  {
+    id:'seo-blog-engine',
+    title:'Building a Weekly SEO Blog Engine That Survives Algorithm Updates',
+    category:'Content',
+    date:'2026-07-05',
+    readTime:'6 min',
+    author:'Riyad Ahmed',
+    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'800'%20height%3D'450'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'g'%20x1%3D'0'%20y1%3D'0'%20x2%3D'1'%20y2%3D'1'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%230C4A6E'%2F%3E%3Cstop%20offset%3D'.55'%20stop-color%3D'%232563EB'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%236366F1'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'url(%23g)'%2F%3E%3Ccircle%20cx%3D'680'%20cy%3D'100'%20r%3D'190'%20fill%3D'rgba(255%2C255%2C255%2C0.07)'%2F%3E%3Ccircle%20cx%3D'210'%20cy%3D'390'%20r%3D'230'%20fill%3D'rgba(0%2C0%2C0%2C0.18)'%2F%3E%3Crect%20x%3D'0'%20y%3D'312'%20width%3D'800'%20height%3D'1'%20fill%3D'rgba(255%2C255%2C255%2C0.2)'%2F%3E%3Crect%20x%3D'290'%20y%3D'0'%20width%3D'1'%20height%3D'450'%20fill%3D'rgba(255%2C255%2C255%2C0.14)'%2F%3E%3Ccircle%20cx%3D'555'%20cy%3D'330'%20r%3D'54'%20fill%3D'none'%20stroke%3D'rgba(255%2C255%2C255%2C0.25)'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E',
+    excerpt:'Cadence beats cleverness. The weekly publishing system behind 40+ ranking posts — topic clusters, briefs, and the one metric I actually watch.'
+  },
+  {
+    id:'course-catalog-architecture',
+    title:'Course Catalog Architecture: Turning 16 Platforms Into One System',
+    category:'E-Learning',
+    date:'2026-06-14',
+    readTime:'8 min',
+    author:'Riyad Ahmed',
+    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'800'%20height%3D'450'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'g'%20x1%3D'0'%20y1%3D'0'%20x2%3D'1'%20y2%3D'1'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%233B0764'%2F%3E%3Cstop%20offset%3D'.55'%20stop-color%3D'%239333EA'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%23312E81'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'url(%23g)'%2F%3E%3Ccircle%20cx%3D'720'%20cy%3D'100'%20r%3D'190'%20fill%3D'rgba(255%2C255%2C255%2C0.07)'%2F%3E%3Ccircle%20cx%3D'240'%20cy%3D'390'%20r%3D'230'%20fill%3D'rgba(0%2C0%2C0%2C0.18)'%2F%3E%3Crect%20x%3D'0'%20y%3D'312'%20width%3D'800'%20height%3D'1'%20fill%3D'rgba(255%2C255%2C255%2C0.2)'%2F%3E%3Crect%20x%3D'350'%20y%3D'0'%20width%3D'1'%20height%3D'450'%20fill%3D'rgba(255%2C255%2C255%2C0.14)'%2F%3E%3Ccircle%20cx%3D'520'%20cy%3D'330'%20r%3D'54'%20fill%3D'none'%20stroke%3D'rgba(255%2C255%2C255%2C0.25)'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E',
+    excerpt:'The same course, sixteen listings, zero drift. A taxonomy-driven approach to multi-platform publishing that keeps quality and speed both up.'
+  },
+  {
+    id:'orchesyn-manifesto',
+    title:'Orchesyn: Why I Am Building an Agentic Workspace for Content Teams',
+    category:'AI',
+    date:'2026-05-30',
+    readTime:'5 min',
+    author:'Riyad Ahmed',
+    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'800'%20height%3D'450'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'g'%20x1%3D'0'%20y1%3D'0'%20x2%3D'1'%20y2%3D'1'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%23082F49'%2F%3E%3Cstop%20offset%3D'.55'%20stop-color%3D'%230E7490'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%237C3AED'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'url(%23g)'%2F%3E%3Ccircle%20cx%3D'760'%20cy%3D'100'%20r%3D'190'%20fill%3D'rgba(255%2C255%2C255%2C0.07)'%2F%3E%3Ccircle%20cx%3D'270'%20cy%3D'390'%20r%3D'230'%20fill%3D'rgba(0%2C0%2C0%2C0.18)'%2F%3E%3Crect%20x%3D'0'%20y%3D'312'%20width%3D'800'%20height%3D'1'%20fill%3D'rgba(255%2C255%2C255%2C0.2)'%2F%3E%3Crect%20x%3D'410'%20y%3D'0'%20width%3D'1'%20height%3D'450'%20fill%3D'rgba(255%2C255%2C255%2C0.14)'%2F%3E%3Ccircle%20cx%3D'485'%20cy%3D'330'%20r%3D'54'%20fill%3D'none'%20stroke%3D'rgba(255%2C255%2C255%2C0.25)'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E',
+    excerpt:'Content teams do not need another dashboard. They need agents that draft, design and ship alongside them. Here is the thesis behind Orchesyn.'
+  }
+];
+
+function mapWP(p){
+  return {
+    id:p.slug||String(p.id),
+    title:(p.title&&p.title.rendered)||'',
+    excerpt:((p.excerpt&&p.excerpt.rendered)||'').replace(/<[^>]*>/g,'').slice(0,180)+'…',
+    image:(p._embedded&&p._embedded['wp:featuredmedia']&&p._embedded['wp:featuredmedia'][0]&&p._embedded['wp:featuredmedia'][0].source_url)||'',
+    category:(p._embedded&&p._embedded['wp:term']&&p._embedded['wp:term'][0]&&p._embedded['wp:term'][0][0]&&p._embedded['wp:term'][0][0].name)||'Blog',
+    date:p.date||'',
+    author:(p._embedded&&p._embedded.author&&p._embedded.author[0]&&p._embedded.author[0].name)||'Riyad Ahmed',
+    readTime:Math.max(3,Math.round((((p.content&&p.content.rendered)||'').split(/\s+/).length)/220))+' min'
+  };
+}
+
+function getBlogs(){
+  if(CMS_PROVIDER==='wordpress'&&CMS_URL){
+    return fetch(CMS_URL+'/wp-json/wp/v2/posts?_embed').then(function(r){return r.json();}).then(function(d){return d.map(mapWP);});
+  }
+  return Promise.resolve(BLOGS); // static fallback — zero backend needed
+}
+
+function getBlog(id){
+  return getBlogs().then(function(list){return list.find(function(b){return b.id===id;})||null;});
+}
+
 /* ---------- Cursor ---------- */
 if(window.matchMedia('(pointer:fine)').matches){
   var dot=document.querySelector('.cur-dot'),ring=document.querySelector('.cur-ring');
@@ -501,8 +678,13 @@ var heroEl=document.querySelector('.hero');
 if(heroEl&&!reduced){
   var heroInner=heroEl.querySelector('.hero-inner'),
       beat2=heroEl.querySelector('.hero-beat2'),
-      hintEl=heroEl.querySelector('.scroll-hint');
+      hintEl=heroEl.querySelector('.scroll-hint'),
+      morphBeat=heroEl.querySelector('.hero-morph');
   var hp=0,hps=0,heroVis=true;
+  var morphEl=document.getElementById('morphWord'),morphLbl=document.getElementById('morphLabel'),
+      morphDots=document.getElementById('morphDots'),railF=document.getElementById('railF'),railP=document.getElementById('railP');
+  var WORDS=[{w:'PRODUCT',l:'01 / Build'},{w:'DESIGN',l:'02 / Craft'},{w:'E-LEARNING',l:'03 / Scale'},{w:'AI SYSTEMS',l:'04 / Automate'}];
+  var curW=0,morphBusy=false,morphTimer=null;
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(es){heroVis=es[0].isIntersecting;},{threshold:0}).observe(heroEl);
   }
@@ -515,13 +697,36 @@ if(heroEl&&!reduced){
     hp=total>0?Math.min(1,Math.max(0,-rect.top/total)):0;
     hps+=(hp-hps)*0.09;
     var p=hps;
-    heroInner.style.opacity=Math.max(0,1-p*2.1).toFixed(3);
+    heroInner.style.opacity=Math.max(0,1-p*2.6).toFixed(3);
     heroInner.style.transform='translate3d(0,'+(p*-110).toFixed(1)+'px,0) scale('+(1-p*0.06).toFixed(4)+')';
-    var b2=Math.min(1,Math.max(0,(p-0.48)/0.34));
+    /* morph beat: visible 0.30 - 0.70 */
+    var mOn=(p>0.30&&p<0.70)?Math.min(1,Math.min((p-0.30)/0.06,(0.70-p)/0.06)):0;
+    morphBeat.style.opacity=mOn.toFixed(3);
+    var mi=Math.min(3,Math.max(0,Math.floor((p-0.30)/0.40*4)));
+    if(mOn>0&&mi!==curW&&!morphBusy){
+      morphBusy=true;
+      morphEl.classList.add('out');
+      (function(nw){
+        morphTimer=setTimeout(function(){
+          morphEl.textContent=WORDS[nw].w;
+          morphLbl.textContent=WORDS[nw].l;
+          morphEl.classList.remove('out');morphEl.classList.add('pre');
+          void morphEl.offsetWidth;
+          morphEl.classList.remove('pre');
+          var ds=morphDots.querySelectorAll('i');
+          ds.forEach(function(d,di){d.classList.toggle('on',di===nw);});
+          morphBusy=false;
+        },300);
+      })(mi);
+      curW=mi;
+    }
+    var b2=Math.min(1,Math.max(0,(p-0.66)/0.30));
     var bo=b2*b2*(3-2*b2);
     beat2.style.opacity=bo.toFixed(3);
     beat2.style.transform='translate3d(0,'+((1-bo)*46).toFixed(1)+'px,0)';
     if(hintEl)hintEl.style.opacity=Math.max(0,1-p*7).toFixed(3);
+    if(railF)railF.style.transform='scaleY('+p.toFixed(3)+')';
+    if(railP)railP.textContent=Math.round(p*100)+'%';
     window.__blobP=p;
   })();
 }else{
@@ -532,6 +737,85 @@ if(heroEl&&!reduced){
 
 /* ---------- Marquee duplicate ---------- */
 var mq=document.getElementById('mq');mq.innerHTML+=mq.innerHTML;
+
+
+/* ---------- Sparks ---------- */
+(function(){
+  var holder=document.getElementById('sparks');if(!holder||reduced)return;
+  for(var i=0;i<14;i++){
+    var s=document.createElement('i');s.className='spark';
+    var sz=(Math.random()*3.4+1.6).toFixed(1);
+    s.style.cssText='left:'+(Math.random()*100).toFixed(1)+'%;bottom:-4%;width:'+sz+'px;height:'+sz+'px;'+
+      '--dur:'+(Math.random()*10+10).toFixed(1)+'s;--dx:'+((Math.random()*120-60)|0)+'px;--o:'+(Math.random()*.5+.25).toFixed(2)+
+      ';animation-delay:-'+(Math.random()*18).toFixed(1)+'s;opacity:0';
+    holder.appendChild(s);
+  }
+})();
+
+/* ---------- Magnetic buttons + card tilt ---------- */
+if(window.matchMedia('(pointer:fine)').matches&&!reduced){
+  document.querySelectorAll('.btn,.nav-cta').forEach(function(b){
+    b.addEventListener('mousemove',function(e){
+      var r=b.getBoundingClientRect();
+      var dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);
+      b.style.transform='translate('+(dx*0.22).toFixed(1)+'px,'+(dy*0.28).toFixed(1)+'px)';
+    });
+    b.addEventListener('mouseleave',function(){
+      b.style.transition='transform .5s cubic-bezier(.16,1,.3,1)';b.style.transform='';
+      setTimeout(function(){b.style.transition='';},500);
+    });
+  });
+  document.addEventListener('mouseover',function(e){
+    var card=e.target.closest&&e.target.closest('.bcard');
+    document.querySelectorAll('.bcard.tilting').forEach(function(c){if(c!==card){c.classList.remove('tilting');c.style.transform='';}});
+    if(!card)return;
+    card.classList.add('tilting');
+  });
+  document.addEventListener('mousemove',function(e){
+    var card=e.target.closest&&e.target.closest('.bcard');if(!card)return;
+    var r=card.getBoundingClientRect();
+    var dx=(e.clientX-(r.left+r.width/2))/r.width,dy=(e.clientY-(r.top+r.height/2))/r.height;
+    card.style.transform='translateY(-8px) perspective(900px) rotateX('+(-dy*4).toFixed(2)+'deg) rotateY('+(dx*5).toFixed(2)+'deg)';
+  });
+  document.addEventListener('mouseout',function(e){
+    var card=e.target.closest&&e.target.closest('.bcard');
+    if(card&&!card.contains(e.relatedTarget)){card.classList.remove('tilting');card.style.transform='';}
+  });
+}
+
+/* ---------- Blog render + filters ---------- */
+var bgrid=document.getElementById('bgrid'),bfil=document.getElementById('bfilters'),io2=window.__revealIO||null;
+if(bgrid){
+  function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+  function fmtDate(iso){try{return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}catch(e){return iso;}}
+  function renderBlogs(list){
+    bgrid.innerHTML=list.map(function(b,i){
+      var img=b.image?'<img src="'+esc(b.image)+'" alt="" loading="lazy" decoding="async">':'';
+      var rv=window.__revealIO?' reveal':'';
+      return '<article class="bcard'+rv+'" style="--d:'+(i*0.06)+'s">'+
+        '<div class="bmedia">'+img+'<span class="bcat">'+esc(b.category)+'</span></div>'+
+        '<div class="bbody">'+
+          '<div class="bmeta"><span>'+fmtDate(b.date)+'</span><span>'+esc(b.readTime)+'</span><span>'+esc(b.author)+'</span></div>'+
+          '<h3>'+esc(b.title)+'</h3>'+
+          '<p>'+esc(b.excerpt)+'</p>'+
+          '<button class="bread" data-blog="'+esc(b.id)+'">Read</button>'+
+        '</div></article>';
+    }).join('');
+    if(window.__revealIO){bgrid.querySelectorAll('.bcard').forEach(function(el){window.__revealIO.observe(el);});}
+  }
+  getBlogs().then(renderBlogs).catch(function(){bgrid.innerHTML='<p class="bempty">Posts could not be loaded.</p>';});
+  if(bfil){
+    bfil.addEventListener('click',function(e){
+      var btn=e.target.closest('.bfilter');if(!btn)return;
+      bfil.querySelectorAll('.bfilter').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      var f=btn.getAttribute('data-f');
+      getBlogs().then(function(list){
+        renderBlogs(f==='all'?list:list.filter(function(b){return b.category===f;}));
+      });
+    });
+  }
+}
 
 /* ---------- Capabilities hover glow ---------- */
 document.querySelectorAll('.cap').forEach(function(c){
