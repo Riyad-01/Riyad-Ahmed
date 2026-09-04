@@ -502,20 +502,28 @@ var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- Loader ---------- */
 var loader=document.getElementById('loader'),lnum=document.getElementById('lnum'),lbar=document.getElementById('lbar');
-var p=0,loaded=false;
+var p=0,loaded=false,finished=false;
+function finishLoad(){
+  if(finished)return;finished=true;
+  p=100;clearInterval(lt);clearTimeout(hardFail);
+  lnum.textContent='100%';
+  lbar.style.transform='scaleX(1)';
+  setTimeout(function(){
+    loader.classList.add('done');
+    document.body.classList.add('ready');
+    startReveals();
+  },250);
+}
 window.addEventListener('load',function(){loaded=true;});
 var lt=setInterval(function(){
+  if(finished)return;
   p+=loaded?12:(Math.random()*7+3);
-  if(p>=100){p=100;clearInterval(lt);
-    setTimeout(function(){
-      loader.classList.add('done');
-      document.body.classList.add('ready');
-      startReveals();
-    },250);
-  }
+  if(p>=100){finishLoad();return;}
   lnum.textContent=Math.floor(p)+'%';
   lbar.style.transform='scaleX('+(p/100)+')';
 },90);
+var hardFail=setTimeout(finishLoad,6000); // failsafe: always enter the site
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&loaded)finishLoad();});
 
 /* ---------- Smooth scroll (Lenis) ---------- */
 var lenis=null;
@@ -592,7 +600,7 @@ var BLOGS = [
     date:'2026-08-12',
     readTime:'7 min',
     author:'Riyad Ahmed',
-    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'800'%20height%3D'450'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'g'%20x1%3D'0'%20y1%3D'0'%20x2%3D'1'%20y2%3D'1'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%23312E81'%2F%3E%3Cstop%20offset%3D'.55'%20stop-color%3D'%236D28D9'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%230E7490'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'url(%23g)'%2F%3E%3Ccircle%20cx%3D'600'%20cy%3D'100'%20r%3D'190'%20fill%3D'rgba(255%2C255%2C255%2C0.07)'%2F%3E%3Ccircle%20cx%3D'150'%20cy%3D'390'%20r%3D'230'%20fill%3D'rgba(0%2C0%2C0%2C0.18)'%2F%3E%3Crect%20x%3D'0'%20y%3D'312'%20width%3D'800'%20height%3D'1'%20fill%3D'rgba(255%2C255%2C255%2C0.2)'%2F%3E%3Crect%20x%3D'170'%20y%3D'0'%20width%3D'1'%20height%3D'450'%20fill%3D'rgba(255%2C255%2C255%2C0.14)'%2F%3E%3Ccircle%20cx%3D'625'%20cy%3D'330'%20r%3D'54'%20fill%3D'none'%20stroke%3D'rgba(255%2C255%2C255%2C0.25)'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E',
+    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23312E81%27%2F%3E%3Cstop%20offset%3D%27.55%27%20stop-color%3D%27%236D28D9%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%230E7490%27%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%27800%27%20height%3D%27450%27%20fill%3D%27url(%23g)%27%2F%3E%3Ccircle%20cx%3D%27600%27%20cy%3D%27100%27%20r%3D%27190%27%20fill%3D%27rgba(255%2C255%2C255%2C0.07)%27%2F%3E%3Ccircle%20cx%3D%27150%27%20cy%3D%27390%27%20r%3D%27230%27%20fill%3D%27rgba(0%2C0%2C0%2C0.18)%27%2F%3E%3Crect%20x%3D%270%27%20y%3D%27312%27%20width%3D%27800%27%20height%3D%271%27%20fill%3D%27rgba(255%2C255%2C255%2C0.2)%27%2F%3E%3Crect%20x%3D%27170%27%20y%3D%270%27%20width%3D%271%27%20height%3D%27450%27%20fill%3D%27rgba(255%2C255%2C255%2C0.14)%27%2F%3E%3Ccircle%20cx%3D%27625%27%20cy%3D%27330%27%20r%3D%2754%27%20fill%3D%27none%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.25)%27%20stroke-width%3D%271.5%27%2F%3E%3C%2Fsvg%3E',
     excerpt:'Six years, sixteen platforms, a thousand courses. The naming conventions, QA gates and publishing pipelines that make scale boring — in the best way.'
   },
   {
@@ -602,7 +610,7 @@ var BLOGS = [
     date:'2026-07-28',
     readTime:'9 min',
     author:'Riyad Ahmed',
-    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'800'%20height%3D'450'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'g'%20x1%3D'0'%20y1%3D'0'%20x2%3D'1'%20y2%3D'1'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%231E1B4B'%2F%3E%3Cstop%20offset%3D'.55'%20stop-color%3D'%237C3AED'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%2322D3EE'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'url(%23g)'%2F%3E%3Ccircle%20cx%3D'640'%20cy%3D'100'%20r%3D'190'%20fill%3D'rgba(255%2C255%2C255%2C0.07)'%2F%3E%3Ccircle%20cx%3D'180'%20cy%3D'390'%20r%3D'230'%20fill%3D'rgba(0%2C0%2C0%2C0.18)'%2F%3E%3Crect%20x%3D'0'%20y%3D'312'%20width%3D'800'%20height%3D'1'%20fill%3D'rgba(255%2C255%2C255%2C0.2)'%2F%3E%3Crect%20x%3D'230'%20y%3D'0'%20width%3D'1'%20height%3D'450'%20fill%3D'rgba(255%2C255%2C255%2C0.14)'%2F%3E%3Ccircle%20cx%3D'590'%20cy%3D'330'%20r%3D'54'%20fill%3D'none'%20stroke%3D'rgba(255%2C255%2C255%2C0.25)'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E',
+    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%231E1B4B%27%2F%3E%3Cstop%20offset%3D%27.55%27%20stop-color%3D%27%237C3AED%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%2322D3EE%27%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%27800%27%20height%3D%27450%27%20fill%3D%27url(%23g)%27%2F%3E%3Ccircle%20cx%3D%27640%27%20cy%3D%27100%27%20r%3D%27190%27%20fill%3D%27rgba(255%2C255%2C255%2C0.07)%27%2F%3E%3Ccircle%20cx%3D%27180%27%20cy%3D%27390%27%20r%3D%27230%27%20fill%3D%27rgba(0%2C0%2C0%2C0.18)%27%2F%3E%3Crect%20x%3D%270%27%20y%3D%27312%27%20width%3D%27800%27%20height%3D%271%27%20fill%3D%27rgba(255%2C255%2C255%2C0.2)%27%2F%3E%3Crect%20x%3D%27230%27%20y%3D%270%27%20width%3D%271%27%20height%3D%27450%27%20fill%3D%27rgba(255%2C255%2C255%2C0.14)%27%2F%3E%3Ccircle%20cx%3D%27590%27%20cy%3D%27330%27%20r%3D%2754%27%20fill%3D%27none%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.25)%27%20stroke-width%3D%271.5%27%2F%3E%3C%2Fsvg%3E',
     excerpt:'Writer, designer, publisher agents — I run all three. Where they save weeks, where they silently fail, and the human gates I will not remove.'
   },
   {
@@ -612,7 +620,7 @@ var BLOGS = [
     date:'2026-07-05',
     readTime:'6 min',
     author:'Riyad Ahmed',
-    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'800'%20height%3D'450'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'g'%20x1%3D'0'%20y1%3D'0'%20x2%3D'1'%20y2%3D'1'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%230C4A6E'%2F%3E%3Cstop%20offset%3D'.55'%20stop-color%3D'%232563EB'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%236366F1'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'url(%23g)'%2F%3E%3Ccircle%20cx%3D'680'%20cy%3D'100'%20r%3D'190'%20fill%3D'rgba(255%2C255%2C255%2C0.07)'%2F%3E%3Ccircle%20cx%3D'210'%20cy%3D'390'%20r%3D'230'%20fill%3D'rgba(0%2C0%2C0%2C0.18)'%2F%3E%3Crect%20x%3D'0'%20y%3D'312'%20width%3D'800'%20height%3D'1'%20fill%3D'rgba(255%2C255%2C255%2C0.2)'%2F%3E%3Crect%20x%3D'290'%20y%3D'0'%20width%3D'1'%20height%3D'450'%20fill%3D'rgba(255%2C255%2C255%2C0.14)'%2F%3E%3Ccircle%20cx%3D'555'%20cy%3D'330'%20r%3D'54'%20fill%3D'none'%20stroke%3D'rgba(255%2C255%2C255%2C0.25)'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E',
+    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%230C4A6E%27%2F%3E%3Cstop%20offset%3D%27.55%27%20stop-color%3D%27%232563EB%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%236366F1%27%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%27800%27%20height%3D%27450%27%20fill%3D%27url(%23g)%27%2F%3E%3Ccircle%20cx%3D%27680%27%20cy%3D%27100%27%20r%3D%27190%27%20fill%3D%27rgba(255%2C255%2C255%2C0.07)%27%2F%3E%3Ccircle%20cx%3D%27210%27%20cy%3D%27390%27%20r%3D%27230%27%20fill%3D%27rgba(0%2C0%2C0%2C0.18)%27%2F%3E%3Crect%20x%3D%270%27%20y%3D%27312%27%20width%3D%27800%27%20height%3D%271%27%20fill%3D%27rgba(255%2C255%2C255%2C0.2)%27%2F%3E%3Crect%20x%3D%27290%27%20y%3D%270%27%20width%3D%271%27%20height%3D%27450%27%20fill%3D%27rgba(255%2C255%2C255%2C0.14)%27%2F%3E%3Ccircle%20cx%3D%27555%27%20cy%3D%27330%27%20r%3D%2754%27%20fill%3D%27none%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.25)%27%20stroke-width%3D%271.5%27%2F%3E%3C%2Fsvg%3E',
     excerpt:'Cadence beats cleverness. The weekly publishing system behind 40+ ranking posts — topic clusters, briefs, and the one metric I actually watch.'
   },
   {
@@ -622,7 +630,7 @@ var BLOGS = [
     date:'2026-06-14',
     readTime:'8 min',
     author:'Riyad Ahmed',
-    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'800'%20height%3D'450'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'g'%20x1%3D'0'%20y1%3D'0'%20x2%3D'1'%20y2%3D'1'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%233B0764'%2F%3E%3Cstop%20offset%3D'.55'%20stop-color%3D'%239333EA'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%23312E81'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'url(%23g)'%2F%3E%3Ccircle%20cx%3D'720'%20cy%3D'100'%20r%3D'190'%20fill%3D'rgba(255%2C255%2C255%2C0.07)'%2F%3E%3Ccircle%20cx%3D'240'%20cy%3D'390'%20r%3D'230'%20fill%3D'rgba(0%2C0%2C0%2C0.18)'%2F%3E%3Crect%20x%3D'0'%20y%3D'312'%20width%3D'800'%20height%3D'1'%20fill%3D'rgba(255%2C255%2C255%2C0.2)'%2F%3E%3Crect%20x%3D'350'%20y%3D'0'%20width%3D'1'%20height%3D'450'%20fill%3D'rgba(255%2C255%2C255%2C0.14)'%2F%3E%3Ccircle%20cx%3D'520'%20cy%3D'330'%20r%3D'54'%20fill%3D'none'%20stroke%3D'rgba(255%2C255%2C255%2C0.25)'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E',
+    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%233B0764%27%2F%3E%3Cstop%20offset%3D%27.55%27%20stop-color%3D%27%239333EA%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%23312E81%27%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%27800%27%20height%3D%27450%27%20fill%3D%27url(%23g)%27%2F%3E%3Ccircle%20cx%3D%27720%27%20cy%3D%27100%27%20r%3D%27190%27%20fill%3D%27rgba(255%2C255%2C255%2C0.07)%27%2F%3E%3Ccircle%20cx%3D%27240%27%20cy%3D%27390%27%20r%3D%27230%27%20fill%3D%27rgba(0%2C0%2C0%2C0.18)%27%2F%3E%3Crect%20x%3D%270%27%20y%3D%27312%27%20width%3D%27800%27%20height%3D%271%27%20fill%3D%27rgba(255%2C255%2C255%2C0.2)%27%2F%3E%3Crect%20x%3D%27350%27%20y%3D%270%27%20width%3D%271%27%20height%3D%27450%27%20fill%3D%27rgba(255%2C255%2C255%2C0.14)%27%2F%3E%3Ccircle%20cx%3D%27520%27%20cy%3D%27330%27%20r%3D%2754%27%20fill%3D%27none%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.25)%27%20stroke-width%3D%271.5%27%2F%3E%3C%2Fsvg%3E',
     excerpt:'The same course, sixteen listings, zero drift. A taxonomy-driven approach to multi-platform publishing that keeps quality and speed both up.'
   },
   {
@@ -632,7 +640,7 @@ var BLOGS = [
     date:'2026-05-30',
     readTime:'5 min',
     author:'Riyad Ahmed',
-    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'800'%20height%3D'450'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'g'%20x1%3D'0'%20y1%3D'0'%20x2%3D'1'%20y2%3D'1'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%23082F49'%2F%3E%3Cstop%20offset%3D'.55'%20stop-color%3D'%230E7490'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%237C3AED'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'800'%20height%3D'450'%20fill%3D'url(%23g)'%2F%3E%3Ccircle%20cx%3D'760'%20cy%3D'100'%20r%3D'190'%20fill%3D'rgba(255%2C255%2C255%2C0.07)'%2F%3E%3Ccircle%20cx%3D'270'%20cy%3D'390'%20r%3D'230'%20fill%3D'rgba(0%2C0%2C0%2C0.18)'%2F%3E%3Crect%20x%3D'0'%20y%3D'312'%20width%3D'800'%20height%3D'1'%20fill%3D'rgba(255%2C255%2C255%2C0.2)'%2F%3E%3Crect%20x%3D'410'%20y%3D'0'%20width%3D'1'%20height%3D'450'%20fill%3D'rgba(255%2C255%2C255%2C0.14)'%2F%3E%3Ccircle%20cx%3D'485'%20cy%3D'330'%20r%3D'54'%20fill%3D'none'%20stroke%3D'rgba(255%2C255%2C255%2C0.25)'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E',
+    image:'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27800%27%20height%3D%27450%27%3E%3Cdefs%3E%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%27%20y1%3D%270%27%20x2%3D%271%27%20y2%3D%271%27%3E%3Cstop%20offset%3D%270%27%20stop-color%3D%27%23082F49%27%2F%3E%3Cstop%20offset%3D%27.55%27%20stop-color%3D%27%230E7490%27%2F%3E%3Cstop%20offset%3D%271%27%20stop-color%3D%27%237C3AED%27%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%27800%27%20height%3D%27450%27%20fill%3D%27url(%23g)%27%2F%3E%3Ccircle%20cx%3D%27760%27%20cy%3D%27100%27%20r%3D%27190%27%20fill%3D%27rgba(255%2C255%2C255%2C0.07)%27%2F%3E%3Ccircle%20cx%3D%27270%27%20cy%3D%27390%27%20r%3D%27230%27%20fill%3D%27rgba(0%2C0%2C0%2C0.18)%27%2F%3E%3Crect%20x%3D%270%27%20y%3D%27312%27%20width%3D%27800%27%20height%3D%271%27%20fill%3D%27rgba(255%2C255%2C255%2C0.2)%27%2F%3E%3Crect%20x%3D%27410%27%20y%3D%270%27%20width%3D%271%27%20height%3D%27450%27%20fill%3D%27rgba(255%2C255%2C255%2C0.14)%27%2F%3E%3Ccircle%20cx%3D%27485%27%20cy%3D%27330%27%20r%3D%2754%27%20fill%3D%27none%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.25)%27%20stroke-width%3D%271.5%27%2F%3E%3C%2Fsvg%3E',
     excerpt:'Content teams do not need another dashboard. They need agents that draft, design and ship alongside them. Here is the thesis behind Orchesyn.'
   }
 ];
@@ -652,7 +660,10 @@ function mapWP(p){
 
 function getBlogs(){
   if(CMS_PROVIDER==='wordpress'&&CMS_URL){
-    return fetch(CMS_URL+'/wp-json/wp/v2/posts?_embed').then(function(r){return r.json();}).then(function(d){return d.map(mapWP);});
+    return fetch(CMS_URL+'/wp-json/wp/v2/posts?_embed')
+      .then(function(r){return r.json();})
+      .then(function(d){return d.map(mapWP);})
+      .catch(function(){return BLOGS;}); // network/CMS failure -> static fallback
   }
   return Promise.resolve(BLOGS); // static fallback — zero backend needed
 }
@@ -969,3 +980,4 @@ if(typeof THREE!=='undefined' && !reduced){
 </script>
 </body>
 </html>
+Page_Down
