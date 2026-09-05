@@ -107,10 +107,13 @@ nav.scrolled{background:rgba(5,5,7,.72);backdrop-filter:blur(16px);border-bottom
     radial-gradient(900px 600px at 12% 85%,rgba(34,211,238,.09),transparent 60%),
     radial-gradient(700px 500px at 30% 15%,rgba(168,85,247,.08),transparent 60%)}
 #blob-canvas{position:absolute;inset:0;z-index:2;pointer-events:none}
-.hero-inner{position:relative;z-index:1;padding-top:120px;padding-bottom:120px;will-change:transform,opacity}
+@media(max-width:760px){#blob-canvas{opacity:.55}}
+.hero-inner{position:relative;z-index:3;padding-top:120px;padding-bottom:120px;will-change:transform,opacity}
 .hero .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:30px;display:flex;align-items:center;gap:14px}
 .hero .kicker::before{content:"";width:34px;height:1px;background:var(--grad);display:inline-block}
-.hero h1{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(2.6rem,7.2vw,6rem);line-height:1.0;letter-spacing:-.015em;max-width:14ch}
+.hero h1{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(1.65rem,5.3vw,4.7rem);line-height:1.04;letter-spacing:-.015em}
+.hero h1 .l{white-space:nowrap}
+@media(max-width:480px){.hero h1 .l{white-space:normal}}
 .hero h1 .dim{color:var(--dim)}
 .hero h1 .l{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
 .hero h1 .li{display:block;transform:translateY(115%);transition:transform 1.25s var(--ease)}
@@ -152,7 +155,7 @@ body.ready .hero .cta-row{opacity:1;transform:none;transition-delay:.9s}
   animation:drift var(--dur,14s) linear infinite;will-change:transform}
 @keyframes drift{0%{transform:translate3d(0,20px,0);opacity:0}12%{opacity:var(--o,.7)}85%{opacity:var(--o,.7)}100%{transform:translate3d(var(--dx,40px),-84vh,0);opacity:0}}
 /* morph beat */
-.hero-morph{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;opacity:0;pointer-events:none;will-change:opacity}
+.hero-morph{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;opacity:0;pointer-events:none;will-change:opacity}
 .morph-label{font-family:var(--mono);font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted)}
 .morph-word{font-family:var(--disp);font-weight:800;text-transform:uppercase;font-size:clamp(2.2rem,7.6vw,6rem);line-height:1.05;letter-spacing:-.02em;text-align:center;max-width:12ch;
   transition:opacity .42s var(--ease),transform .42s var(--ease),filter .42s var(--ease),clip-path .42s var(--ease)}
@@ -844,11 +847,11 @@ if(typeof THREE!=='undefined' && !reduced){
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
   var scene=new THREE.Scene();
   var camera=new THREE.PerspectiveCamera(42,1,0.1,100);
-  camera.position.z=4.6;
+  camera.position.z=5.7;
 
   var isMobile=innerWidth<760;
   var uniforms={
-    uTime:{value:0},uAmp:{value:isMobile?0.30:0.38},uScroll:{value:0}
+    uTime:{value:0},uAmp:{value:isMobile?0.26:0.30},uScroll:{value:0}
   };
   var mat=new THREE.ShaderMaterial({
     uniforms:uniforms,
@@ -915,16 +918,16 @@ if(typeof THREE!=='undefined' && !reduced){
       'gl_FragColor=vec4(col,1.0);}'
     ].join('\n')
   });
-  var geo=new THREE.IcosahedronGeometry(1.42,isMobile?24:48);
+  var geo=new THREE.IcosahedronGeometry(1.05,isMobile?24:48);
   var blob=new THREE.Mesh(geo,mat);
-  blob.position.x=isMobile?0:1.15;
+  blob.position.x=isMobile?0:1.85;
   blob.position.y=0.05;
   scene.add(blob);
   var sats=[];
   var satDefs=[
-    {r:2.35,s:0.42,size:0.16,y:0.55,ph:0.0},
-    {r:2.85,s:-0.30,size:0.11,y:-0.5,ph:2.1},
-    {r:2.05,s:0.55,size:0.085,y:0.15,ph:4.2}
+    {r:1.9,s:0.42,size:0.13,y:0.5,ph:0.0},
+    {r:2.3,s:-0.30,size:0.09,y:-0.45,ph:2.1},
+    {r:1.65,s:0.55,size:0.07,y:0.12,ph:4.2}
   ];
   satDefs.forEach(function(d){
     var m=new THREE.Mesh(new THREE.IcosahedronGeometry(d.size,isMobile?12:24),mat);
@@ -950,15 +953,15 @@ if(typeof THREE!=='undefined' && !reduced){
     var t=clock.getElapsedTime();
     var P=window.__blobP||0;
     uniforms.uTime.value=t;
-    uniforms.uAmp.value=(isMobile?0.30:0.38)+P*0.22;
+    uniforms.uAmp.value=(isMobile?0.26:0.30)+P*0.18;
     uniforms.uScroll.value=P;
     cmx+=(tmx-cmx)*0.045;cmy+=(tmy-cmy)*0.045;
     blob.rotation.y=t*0.22+cmx*0.9;
     blob.rotation.x=cmy*0.7;
     blob.rotation.z=Math.sin(t*0.12)*0.15;
-    blob.position.x=isMobile?0:(1.15-P*1.15);
+    blob.position.x=isMobile?0:(1.85-P*1.6);
     blob.position.y=0.05-P*0.12;
-    blob.scale.setScalar(1+P*0.5);
+    blob.scale.setScalar(1+P*0.35);
     for(var i=0;i<sats.length;i++){
       var d=sats[i].def,a=t*d.s+d.ph,dr=d.r*(1+P*0.3);
       sats[i].mesh.position.set(blob.position.x+Math.cos(a)*dr,d.y+Math.sin(t*0.7+d.ph)*0.18,Math.sin(a)*dr*0.45);
@@ -966,7 +969,7 @@ if(typeof THREE!=='undefined' && !reduced){
       sats[i].mesh.rotation.x=t*0.5;
     }
     camera.position.x=cmx*0.35;
-    camera.position.z=4.6-P*1.05;
+    camera.position.z=5.7-P*1.2;
     camera.position.y=-cmy*0.3;
     camera.lookAt(blob.position.x*0.55,0,0);
     renderer.render(scene,camera);
@@ -980,4 +983,3 @@ if(typeof THREE!=='undefined' && !reduced){
 </script>
 </body>
 </html>
-Page_Down
